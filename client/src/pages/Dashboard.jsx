@@ -17,8 +17,6 @@ export default function Dashboard() {
       return;
     }
 
-    // For now, we'll parse the token to get user info
-    // (In a real app, you'd call a protected endpoint)
     try {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

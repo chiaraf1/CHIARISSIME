@@ -1,7 +1,3 @@
-// ========================================
-// Cypress Test: client/cypress/e2e/login.cy.js
-// ========================================
-
 describe('Login Page', () => {
   const testUser = {
     email: `cypress_test_${Math.random()}@example.com`,

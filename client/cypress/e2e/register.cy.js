@@ -1,7 +1,3 @@
-// ========================================
-// Cypress Test: client/cypress/e2e/register.cy.js
-// ========================================
-
 describe('Register Page', () => {
     const baseUrl = 'http://localhost:5173';
   
