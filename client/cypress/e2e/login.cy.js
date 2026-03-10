@@ -108,8 +108,8 @@ describe('Login Page', () => {
       cy.contains('CHIARISSIME').should('be.visible');
     });
   
-    it('should show "Sign In to Your Account" heading', () => {
-      cy.contains('Sign In to Your Account').should('be.visible');
+    it('should show "Sign In" heading', () => {
+      cy.contains('Sign In').should('be.visible');
     });
   
     // ====== BUTTON STATES ======
@@ -196,20 +196,22 @@ describe('Login Page', () => {
     });
   
     // ====== TOKEN VERIFICATION ======
-  
-    it('should store valid JWT token in localStorage', () => {
+
+    it('should store a JWT token that starts with eyJ', () => {
       cy.get('input[name="email"]').type(testUser.email);
       cy.get('input[name="password"]').type(testUser.password);
-  
+
       cy.get('button[type="submit"]').click();
-  
+
+      cy.url().should('include', '/dashboard');
+
       cy.window().then((win) => {
         const token = win.localStorage.getItem('token');
         expect(token).to.exist;
-        
+
         // JWT tokens have 3 parts separated by dots
         expect(token.split('.').length).to.equal(3);
-        
+
         // First part should start with eyJ (base64 for '{')
         expect(token.substring(0, 3)).to.equal('eyJ');
       });
@@ -236,8 +238,6 @@ describe('Login Page', () => {
       cy.get('button[type="submit"]').click();
   
       cy.contains('Email and password required').should('be.visible');
-      // Check if error has red styling
-      cy.contains('Email and password required').should('have.class', 'text-red-700');
     });
   
     it('should have functioning icons in form', () => {

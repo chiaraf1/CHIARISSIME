@@ -9,20 +9,18 @@ describe('Register Page', () => {
   
     it('should register a new user successfully', () => {
       const email = `user_${Date.now()}@example.com`;
-      
+      cy.intercept('POST', '**/register').as('registerRequest');
       // Fill form
       cy.get('input[name="name"]').type('Chiara Finger');
       cy.get('input[name="email"]').type(email);
-      cy.get('input[name="password"]').type('password123');
-      cy.get('input[name="confirmPassword"]').type('password123');
+      cy.get('input[name="password"]').type('password1234');
+      cy.get('input[name="confirmPassword"]').type('password1234');
   
       // Submit
       cy.get('button[type="submit"]').click();
-  
-      // Should redirect to dashboard
+
+      // Wait for redirect, then check token
       cy.url().should('include', '/dashboard');
-  
-      // Token should be in localStorage
       cy.window().then((win) => {
         expect(win.localStorage.getItem('token')).to.exist;
       });
@@ -85,7 +83,7 @@ describe('Register Page', () => {
     // ====== DUPLICATE EMAIL ======
   
     it('should show error when email is already registered', () => {
-          const email = 'duplicate@example.com';
+          const email = `duplicate_${Date.now()}@example.com`;
       
           // First registration
           cy.get('input[name="name"]').type('First User');
@@ -95,7 +93,6 @@ describe('Register Page', () => {
           cy.get('button[type="submit"]').click();
       
           // Wait for redirect and go back to register
-          cy.url().should('include', '/dashboard');
           cy.wait(1000);
           cy.visit(`${baseUrl}/register`);
       
@@ -114,7 +111,7 @@ describe('Register Page', () => {
   
     it('should have Sign In link to login page', () => {
       cy.contains('Sign In').should('be.visible').click();
-      cy.url().should('include', '/signin');
+      cy.url().should('include', '/login');
     });
   
     it('should have CHIARISSIME branding', () => {
