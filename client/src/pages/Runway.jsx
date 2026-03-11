@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ChevronRight, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 
 export default function Runway() {
   const [allShows, setAllShows] = useState([]);
-  const [selectedShow, setSelectedShow] = useState(null);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:5000/api/articles?page=runway')
@@ -63,62 +64,7 @@ export default function Runway() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        {selectedShow ? (
-          <div className="space-y-8">
-            <button
-              onClick={() => setSelectedShow(null)}
-              className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
-            >
-              ← Back to Runway
-            </button>
-
-            <div className="space-y-8">
-              <div className="w-full aspect-video rounded-lg overflow-hidden bg-[#f0f0f0]">
-                <img
-                  src={selectedShow.image}
-                  alt={selectedShow.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase mb-2">
-                    {[selectedShow.category, selectedShow.season].filter(Boolean).join(' · ')}
-                  </p>
-                  <h2 className="text-4xl font-light tracking-tight mb-2">
-                    {selectedShow.title}
-                  </h2>
-                  <p className="text-xl font-light text-[#6b6b6b]">
-                    {selectedShow.byline}
-                  </p>
-                </div>
-                <div className="w-12 h-px bg-[#0a0a0a]"></div>
-              </div>
-
-              <div className="space-y-6 max-w-3xl">
-                {selectedShow.body?.map((paragraph, i) => (
-                  <p key={i} className="text-lg font-light text-[#4a4a4a] leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-
-              <div className="pt-8 border-t border-[#e0e0e0] space-y-4">
-                <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">
-                  Share this review
-                </p>
-                <div className="flex gap-4">
-                  {['Instagram', 'Facebook', 'Pinterest'].map(s => (
-                    <a key={s} href="#" className="text-sm text-[#0a0a0a] hover:text-[#6b6b6b] transition-colors">
-                      {s}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase py-20 text-center">Loading...</p>
         ) : query.trim() ? (
           <div className="space-y-8">
@@ -133,7 +79,7 @@ export default function Runway() {
                   <article
                     key={show._id}
                     className="group cursor-pointer space-y-4"
-                    onClick={() => setSelectedShow(show)}
+                    onClick={() => navigate(`/runway/${show._id}`)}
                   >
                     <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
                       <img src={show.image} alt={show.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -176,7 +122,7 @@ export default function Runway() {
                   {allShows[0].excerpt}
                 </p>
                 <button
-                  onClick={() => setSelectedShow(allShows[0])}
+                  onClick={() => navigate(`/runway/${allShows[0]._id}`)}
                   className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light border-b border-[#0a0a0a] hover:text-[#6b6b6b] transition-colors pb-2"
                 >
                   Read Review
@@ -200,7 +146,7 @@ export default function Runway() {
                     <article
                       key={show._id}
                       className="group cursor-pointer space-y-4"
-                      onClick={() => setSelectedShow(show)}
+                      onClick={() => navigate(`/runway/${show._id}`)}
                     >
                       <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
                         <img src={show.image} alt={show.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

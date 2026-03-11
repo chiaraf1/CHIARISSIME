@@ -17,7 +17,6 @@ describe('Home Page', () => {
   // ====== NAVIGATION LINKS ======
 
   it('should have a link to Editorials', () => {
-    // Click the first "Editorials" link in the nav
     cy.get('a[href="/editorials"]').first().click();
     cy.url().should('include', '/editorials');
   });
@@ -47,8 +46,13 @@ describe('Home Page', () => {
     cy.contains('The Carolyn Bessette Copy-Paste Era').should('be.visible');
   });
 
-  it('should show the Chanel runway card', () => {
-    cy.contains('Chanel Spring/Summer 2025').should('be.visible');
+  it('should show a CHANEL runway card', () => {
+    cy.contains('CHANEL').should('be.visible');
+  });
+
+  it('should navigate to an article detail URL when clicking a card', () => {
+    cy.contains('The Carolyn Bessette Copy-Paste Era').click();
+    cy.url().should('match', /\/editorials\/[a-f0-9]+/);
   });
 
   // ====== NEWSLETTER SECTION ======

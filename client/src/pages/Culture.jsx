@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 
 export default function Culture() {
   const [allArticles, setAllArticles] = useState([]);
-  const [selectedArticle, setSelectedArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:5000/api/articles?page=culture')
@@ -38,62 +39,7 @@ export default function Culture() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        {selectedArticle ? (
-          <div className="space-y-8">
-            <button
-              onClick={() => setSelectedArticle(null)}
-              className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
-            >
-              ← Back to Culture
-            </button>
-
-            <div className="space-y-8">
-              <div className="w-full h-120 lg:h-150 overflow-hidden">
-                <img
-                  src={selectedArticle.image}
-                  alt={selectedArticle.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase mb-2">
-                    {[selectedArticle.tag, selectedArticle.section].filter(Boolean).join(' · ')}
-                  </p>
-                  <h2 className="text-4xl font-light tracking-tight mb-2">
-                    {selectedArticle.title}
-                  </h2>
-                  <p className="text-xl font-light text-[#6b6b6b]">
-                    {selectedArticle.byline}
-                  </p>
-                </div>
-                <div className="w-12 h-px bg-[#0a0a0a]"></div>
-              </div>
-
-              <div className="space-y-6 max-w-3xl">
-                {selectedArticle.body?.map((paragraph, i) => (
-                  <p key={i} className="text-lg font-light text-[#4a4a4a] leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-
-              <div className="pt-8 border-t border-[#e0e0e0] space-y-4">
-                <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">
-                  Share this story
-                </p>
-                <div className="flex gap-4">
-                  {['Instagram', 'Facebook', 'Pinterest'].map(s => (
-                    <a key={s} href="#" className="text-sm text-[#0a0a0a] hover:text-[#6b6b6b] transition-colors">
-                      {s}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase py-20 text-center">Loading...</p>
         ) : allArticles.length === 0 ? (
           <div className="py-20 text-center space-y-4">
@@ -112,7 +58,7 @@ export default function Culture() {
                 </div>
                 <p className="text-lg font-light text-[#4a4a4a]">{allArticles[0].excerpt}</p>
                 <button
-                  onClick={() => setSelectedArticle(allArticles[0])}
+                  onClick={() => navigate(`/culture/${allArticles[0]._id}`)}
                   className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light border-b border-[#0a0a0a] hover:text-[#6b6b6b] transition-colors pb-2"
                 >
                   Read Article
@@ -133,7 +79,7 @@ export default function Culture() {
                     <article
                       key={article._id}
                       className="group cursor-pointer space-y-4"
-                      onClick={() => setSelectedArticle(article)}
+                      onClick={() => navigate(`/culture/${article._id}`)}
                     >
                       <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
                         <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

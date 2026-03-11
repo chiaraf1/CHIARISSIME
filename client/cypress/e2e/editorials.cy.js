@@ -47,30 +47,32 @@ describe('Editorials Page', () => {
 
   // ====== READING AN ARTICLE ======
 
-  it('should open the featured editorial when you click "Read Editorial"', () => {
+  it('should navigate to the article detail URL when clicking "Read Editorial"', () => {
     cy.contains('Read Editorial').click();
+    cy.url().should('match', /\/editorials\/[a-f0-9]+/);
+  });
 
-    // The full article content should now be visible
+  it('should show the article title on the detail page', () => {
+    cy.contains('Read Editorial').click();
     cy.contains('The Carolyn Bessette Copy-Paste Era').should('be.visible');
-    cy.contains('Why Style Is More Than an Outfit').should('be.visible');
   });
 
-  it('should show a "Back to Editorials" button after opening an article', () => {
+  it('should show a back button on the article detail page', () => {
     cy.contains('Read Editorial').click();
-    cy.contains('Back to Editorials').should('be.visible');
+    cy.contains('← Back').should('be.visible');
   });
 
-  it('should go back to the article list when clicking "Back to Editorials"', () => {
+  it('should go back to editorials when clicking the back button', () => {
     cy.contains('Read Editorial').click();
-    cy.contains('Back to Editorials').click();
-
-    // Should be back on the list — featured title visible again
-    cy.contains('Read Editorial').should('be.visible');
+    cy.contains('← Back').click();
+    cy.url().should('include', '/editorials');
+    cy.url().should('not.match', /\/editorials\/[a-f0-9]+/);
   });
 
-  it('should open the Thrifting article when you click on it', () => {
+  it('should navigate to the Thrifting article when clicking on it', () => {
     cy.contains('Thrifting: Where History Meets Style').click();
-    cy.contains('Why vintage fashion is more than just a trend').should('be.visible');
+    cy.url().should('match', /\/editorials\/[a-f0-9]+/);
+    cy.contains('Thrifting: Where History Meets Style').should('be.visible');
   });
 
   // ====== NEWSLETTER SECTION ======

@@ -33,53 +33,50 @@ describe('Runway Page', () => {
 
   // ====== SHOWS LIST ======
 
-  it('should show the featured Chanel show', () => {
-    cy.contains('Chanel Spring/Summer 2025').should('be.visible');
+  it('should show the ISABEL MARANT show', () => {
+    cy.contains('ISABEL MARANT').should('be.visible');
   });
 
-  it('should show the Chloé show', () => {
-    cy.contains('Chloé Spring/Summer 2025').should('be.visible');
+  it('should show the VALENTINO show', () => {
+    cy.contains('VALENTINO').should('be.visible');
   });
 
-  it('should show the Valentino show', () => {
-    cy.contains('Valentino Couture SS 2025').should('be.visible');
+  it('should show the CHANEL show', () => {
+    cy.contains('CHANEL').should('be.visible');
   });
 
-  it('should show the Loewe show', () => {
-    cy.contains('Loewe AW 2025').should('be.visible');
+  it('should show the CHLOÈ show', () => {
+    cy.contains('CHLOÈ').should('be.visible');
   });
 
   // ====== READING A REVIEW ======
 
-  it('should open the featured review when you click "Read Review"', () => {
+  it('should navigate to the article detail URL when clicking "Read Review"', () => {
     cy.contains('Read Review').click();
-
-    // The full review content should now be visible
-    cy.contains('Chanel Spring/Summer 2025').should('be.visible');
-    cy.contains('The Return of the Tweed').should('be.visible');
+    cy.url().should('match', /\/runway\/[a-f0-9]+/);
   });
 
-  it('should show a "Back to Runway" button after opening a review', () => {
+  it('should show the show title on the detail page', () => {
     cy.contains('Read Review').click();
-    cy.contains('Back to Runway').should('be.visible');
+    cy.contains('ISABEL MARANT').should('be.visible');
   });
 
-  it('should go back to the list when clicking "Back to Runway"', () => {
+  it('should show a back button on the detail page', () => {
     cy.contains('Read Review').click();
-    cy.contains('Back to Runway').click();
-
-    // Should be back on the list
-    cy.contains('Read Review').should('be.visible');
+    cy.contains('← Back').should('be.visible');
   });
 
-  it('should open the Valentino review when you click on it', () => {
-    cy.contains('Valentino Couture SS 2025').click();
-    cy.contains('Red and Silence').should('be.visible');
+  it('should go back to runway when clicking the back button', () => {
+    cy.contains('Read Review').click();
+    cy.contains('← Back').click();
+    cy.url().should('include', '/runway');
+    cy.url().should('not.match', /\/runway\/[a-f0-9]+/);
   });
 
-  it('should open the Loewe review when you click on it', () => {
-    cy.contains('Loewe AW 2025').click();
-    cy.contains('Jonathan Anderson').should('be.visible');
+  it('should navigate to the CHANEL review when clicking on it', () => {
+    cy.contains('CHANEL').click();
+    cy.url().should('match', /\/runway\/[a-f0-9]+/);
+    cy.contains('CHANEL').should('be.visible');
   });
 
   // ====== NEWSLETTER SECTION ======

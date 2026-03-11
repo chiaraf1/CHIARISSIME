@@ -1,5 +1,15 @@
 import Article from '../models/Article.js';
 
+export const getArticle = async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    if (!article) return res.status(404).json({ message: 'Article not found' });
+    res.json(article);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getArticles = async (req, res) => {
   try {
     const { page } = req.query;

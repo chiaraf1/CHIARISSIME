@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ChevronRight, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 
 export default function Editorials() {
   const [allEditorials, setAllEditorials] = useState([]);
-  const [selectedEditorial, setSelectedEditorial] = useState(null);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:5000/api/articles?page=editorials')
@@ -63,62 +64,7 @@ export default function Editorials() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        {selectedEditorial ? (
-          <div className="space-y-8">
-            <button
-              onClick={() => setSelectedEditorial(null)}
-              className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
-            >
-              ← Back to Editorials
-            </button>
-
-            <div className="space-y-8">
-              <div className="w-full h-120 lg:h-150 overflow-hidden">
-                <img
-                  src={selectedEditorial.image}
-                  alt={selectedEditorial.title}
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase mb-2">
-                    {[selectedEditorial.category, selectedEditorial.date].filter(Boolean).join(' · ')}
-                  </p>
-                  <h2 className="text-4xl font-light tracking-tight mb-2">
-                    {selectedEditorial.title}
-                  </h2>
-                  <p className="text-xl font-light text-[#6b6b6b]">
-                    {selectedEditorial.byline}
-                  </p>
-                </div>
-                <div className="w-12 h-px bg-[#0a0a0a]"></div>
-              </div>
-
-              <div className="space-y-6 max-w-3xl">
-                {selectedEditorial.body?.map((paragraph, i) => (
-                  <p key={i} className="text-lg font-light text-[#4a4a4a] leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-
-              <div className="pt-8 border-t border-[#e0e0e0] space-y-4">
-                <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">
-                  Share this story
-                </p>
-                <div className="flex gap-4">
-                  {['Instagram', 'Facebook', 'Pinterest'].map(s => (
-                    <a key={s} href="#" className="text-sm text-[#0a0a0a] hover:text-[#6b6b6b] transition-colors">
-                      {s}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase py-20 text-center">Loading...</p>
         ) : query.trim() ? (
           <div className="space-y-8">
@@ -133,7 +79,7 @@ export default function Editorials() {
                   <article
                     key={editorial._id}
                     className="group cursor-pointer space-y-4"
-                    onClick={() => setSelectedEditorial(editorial)}
+                    onClick={() => navigate(`/editorials/${editorial._id}`)}
                   >
                     <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
                       <img src={editorial.image} alt={editorial.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -168,7 +114,7 @@ export default function Editorials() {
                 </div>
                 <p className="text-lg font-light text-[#4a4a4a]">{allEditorials[0].excerpt}</p>
                 <button
-                  onClick={() => setSelectedEditorial(allEditorials[0])}
+                  onClick={() => navigate(`/editorials/${allEditorials[0]._id}`)}
                   className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light border-b border-[#0a0a0a] hover:text-[#6b6b6b] transition-colors pb-2"
                 >
                   Read Editorial
@@ -189,7 +135,7 @@ export default function Editorials() {
                     <article
                       key={editorial._id}
                       className="group cursor-pointer space-y-4"
-                      onClick={() => setSelectedEditorial(editorial)}
+                      onClick={() => navigate(`/editorials/${editorial._id}`)}
                     >
                       <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
                         <img src={editorial.image} alt={editorial.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

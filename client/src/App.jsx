@@ -7,6 +7,7 @@ import Editorials from './pages/Editorials';
 import Runway from './pages/Runway';
 import Culture from './pages/Culture';
 import Admin from './pages/Admin';
+import ArticleDetail from './pages/ArticleDetail';
 import './App.css'
 
 
@@ -22,6 +23,9 @@ function App() {
         <Route path='/runway' element={<Runway />} />
         <Route path='/culture' element={<Culture />} />
         <Route path='/admin' element={<Admin />} />
+        <Route path='/editorials/:id' element={<ArticleDetail />} />
+        <Route path='/runway/:id' element={<ArticleDetail />} />
+        <Route path='/culture/:id' element={<ArticleDetail />} />
       </Routes>
     </BrowserRouter>
   );

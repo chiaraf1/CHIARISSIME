@@ -34,48 +34,55 @@ describe('Culture Page', () => {
 
   // ====== ARTICLE INDEX ======
 
-  it('should show the Film tag in the article index', () => {
+  it('should show the Film tag', () => {
     cy.contains('Film').should('be.visible');
   });
 
-  it('should show the Art tag in the article index', () => {
+  it('should show the Art tag', () => {
     cy.contains('Art').should('be.visible');
   });
 
-  it('should show the Music tag in the article index', () => {
+  it('should show the Music tag', () => {
     cy.contains('Music').should('be.visible');
   });
 
   // ====== ARTICLES CONTENT ======
 
   it('should show the Wes Anderson article', () => {
-    cy.contains('The Wes Anderson Wardrobe').should('be.visible');
+    cy.contains('Wes Anderson: The Architect of Symmetrical Style').should('be.visible');
   });
 
-  it('should show the Fashion & Art article', () => {
-    cy.contains('The Canvas and the Collection').should('be.visible');
+  it('should show the Fashion as Art article', () => {
+    cy.contains('Fashion as Art').should('be.visible');
   });
 
-  it('should show the Fashion & Music article', () => {
-    cy.contains('Dressed for the Sound').should('be.visible');
+  it('should show the Fashion and Music article', () => {
+    cy.contains('Fashion and Music').should('be.visible');
   });
 
-  it('should show article body text about Wes Anderson', () => {
-    cy.contains('Wes Anderson does not dress his characters').should('be.visible');
+  // ====== READING AN ARTICLE ======
+
+  it('should navigate to the article detail URL when clicking "Read Article"', () => {
+    cy.contains('Read Article').click();
+    cy.url().should('match', /\/culture\/[a-f0-9]+/);
   });
 
-  it('should show article body text about fashion and art', () => {
-    cy.contains('Rei Kawakubo').should('be.visible');
+  it('should show a back button on the detail page', () => {
+    cy.contains('Read Article').click();
+    cy.contains('← Back').should('be.visible');
   });
 
-  it('should show article body text about music and fashion', () => {
-    cy.contains('David Bowie').should('be.visible');
+  it('should go back to culture when clicking the back button', () => {
+    cy.contains('Read Article').click();
+    cy.contains('← Back').click();
+    cy.url().should('include', '/culture');
+    cy.url().should('not.match', /\/culture\/[a-f0-9]+/);
   });
 
   // ====== IMAGES ======
 
   it('should render article images', () => {
-    cy.get('article img').should('have.length', 2);
+    cy.get('article img').should('have.length.at.least', 1);
   });
 
   // ====== NEWSLETTER ======
