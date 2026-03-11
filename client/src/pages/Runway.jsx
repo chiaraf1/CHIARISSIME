@@ -1,71 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronRight, Search } from 'lucide-react';
 import Nav from '../components/Nav';
 
 export default function Runway() {
+  const [allShows, setAllShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const shows = [
-    {
-      id: 1,
-      title: 'Chanel Spring/Summer 2025: The Return of the Tweed',
-      subtitle: 'Virginie Viard reimagines the house codes for a new generation',
-      category: 'Haute Couture',
-      season: 'SS 2025',
-      image: '/images/runway/chanel.jpg',
-      excerpt: 'At the Grand Palais Éphémère, Chanel unveiled a collection that honors the founding spirit of Gabrielle Chanel while speaking directly to a contemporary woman who values ease as much as elegance.',
-      content: `The Grand Palais Éphémère fell silent as the first model stepped onto the runway in a pale ivory tweed suit — the kind of garment that has defined Chanel for nearly a century, yet somehow felt entirely fresh.
-Virginie Viard has always understood that Chanel's power lies not in reinvention, but in refinement. This season, she leaned into that philosophy fully. Boucle jackets were cut shorter and worn with fluid trousers. Quilted bags appeared in new proportions. Camellia corsages adorned lapels in unexpected, oversized scale.
-What made the collection remarkable was its restraint. In a season where maximalism dominated many competing shows, Chanel chose to whisper rather than shout. Each exit was considered, balanced, and deeply wearable — qualities that feel increasingly rare on the runway.
-The palette moved from ivory and cream through warm beige to a deep black finale. Gold chains threaded through every look, sometimes barely visible, sometimes displayed with quiet confidence.
-This was a collection about belonging. About wearing clothes that feel like a second skin rather than a statement. In that sense, it was perhaps the most Chanel show in years.`,
-    },
-    {
-      id: 2,
-      title: 'Chloé Spring/Summer 2025: The Language of the Free',
-      subtitle: "Chemena Kamali's ode to Bohemian femininity, rooted in the house's DNA",
-      category: 'Ready-to-Wear',
-      season: 'SS 2025',
-      image: '/images/runway/chloe.jpg',
-      excerpt: "In her second season at the helm of Chloé, Chemena Kamali deepened her vision of a woman who is free, romantic, and entirely herself — a collection that felt like a conversation with the house's most iconic decades.",
-      content: `There is a lightness to Chloé that no other house quite replicates. It is not simply about sheer fabric or floral prints — it is about a particular kind of ease, a femininity that feels chosen rather than imposed. Chemena Kamali, in her Spring/Summer 2025 collection, proved once again that she understands this more instinctively than almost anyone.
-The show opened on the banks of the Seine, models moving through soft morning light in dresses that seemed to belong to no specific era. A broderie anglaise blouse. A suede fringe skirt. A silk wrap dress in the warm ochre tones that have become a Kamali signature. Each piece felt timeless in the truest sense — not nostalgic, but outside of time entirely.
-What distinguished this collection from its predecessors was a new confidence in structure. While the bohemian spirit remained, Kamali introduced tailored elements — a sharply cut blazer worn over a floating slip dress, wide-leg trousers in cream linen paired with a gathered chiffon top — that gave the collection a grounded, wearable quality.
-The accessories continued to evolve. The Chloé Marcie bag appeared in new, sun-bleached leathers. Sandals were flat, strappy, effortless.
-Colour moved from warm whites through terracotta and dusty rose to a deep chocolate brown in the finale. It was a palette drawn from the earth, worn by women who seemed entirely comfortable in their own skin.
-Kamali is doing something quietly radical at Chloé: building a world rather than a trend. This collection was its most complete expression yet.`,
-    },
-    {
-      id: 3,
-      title: 'Valentino Couture SS 2025: Red and Silence',
-      subtitle: 'Pierpaolo Piccioli steps back to let the dress speak',
-      category: 'Haute Couture',
-      season: 'SS 2025',
-      image: '/images/runway/valentino.jpg',
-      excerpt: `A single colour. Forty-seven exits. Valentino's Haute Couture show this season was an exercise in reduction — and in the process, it became one of the most emotionally affecting shows in recent memory.`,
-      content: `There is something almost violent about a monochrome show done at this level of conviction. Valentino's Haute Couture for Spring/Summer 2025 was presented in what the house simply called "Valentino Red" — the same shade that has defined the Roman maison since its founding.
-Pierpaolo Piccioli stripped everything else away. There were no accessories, no bags, no shoes in contrasting tones. Even the set was bare: a white box, a wooden floor, natural light.
-What remained was the dress itself.
-And the dresses were extraordinary. Ball gowns with volumes that filled the room. Column silhouettes in bias-cut duchess satin. Ruffled confections that recalled the great couturiers of the mid-twentieth century, yet felt entirely of this moment.
-The effect of the monochrome was unexpected: rather than flattening the collection, it amplified the architecture of each piece. With colour removed as a variable, the eye was drawn entirely to cut, volume, proportion, and movement.
-This was couture as argument — a defense of craft, of slowness, of the human hand. In a fashion landscape increasingly dominated by spectacle and content strategy, Valentino made a case for the dress alone.`,
-    },
-    {
-      id: 4,
-      title: 'Loewe AW 2025: Jonathan Anderson and the Art of the Uncanny',
-      subtitle: 'When fashion becomes sculpture and sculpture becomes fashion',
-      category: 'Ready-to-Wear',
-      season: 'AW 2025',
-      image: '/images/runway/loewe.jpg',
-      excerpt: 'Jonathan Anderson continues to make fashion that unsettles in the best possible way — garments that ask you to look twice, and then again, until you are no longer certain what you are seeing.',
-      content: `Few designers working today have Jonathan Anderson's appetite for genuine strangeness. His Loewe collections have, over the years, introduced inflatable sculptures, hyper-realistic trompe l'oeil knits, and shoes that defied the laws of physics. Autumn/Winter 2025 continued in this tradition — but with a new quietness.
-The collection opened with a series of knitted garments that appeared, at first glance, to be conventional. A cream roll-neck. A brown cardigan. A pair of wide-leg trousers. Then, gradually, the eye adjusted: the textures were wrong. The proportions were slightly off. A sleeve descended three inches too far. A neckline folded in a direction that necks do not naturally fold.
-This is Anderson's ongoing project: to make you conscious of looking. To remind you that clothing, however familiar, is always also a construction.
-The leather goods were predictably covetable — a new iteration of the Puzzle bag in a muted brick tone, alongside a series of elongated clutches that recalled modernist sculpture.
-By the finale, the collection had moved into something approaching the sublime: long coats in a deep indigo that seemed to absorb the light, worn by models whose stillness made the whole room pause.
-Anderson remains one of fashion's most restless and essential minds.`,
-    },
-  ];
+  useEffect(() => {
+    fetch('http://localhost:5000/api/articles?page=runway')
+      .then(res => res.json())
+      .then(data => setAllShows(Array.isArray(data) ? data : []))
+      .catch(() => setAllShows([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const shows = query.trim()
+    ? allShows.filter(s =>
+        `${s.title} ${s.byline} ${s.category} ${s.season}`.toLowerCase().includes(query.toLowerCase())
+      )
+    : allShows;
 
   return (
     <div className="min-h-screen bg-white">
@@ -97,6 +52,8 @@ Anderson remains one of fashion's most restless and essential minds.`,
             <Search size={20} className="absolute left-4 top-3 text-[#6b6b6b]" />
             <input
               type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
               placeholder="Search runway reviews..."
               className="w-full pl-12 pr-4 py-3 bg-white border border-[#e0e0e0] focus:outline-none focus:border-[#0a0a0a] text-sm"
             />
@@ -127,22 +84,24 @@ Anderson remains one of fashion's most restless and essential minds.`,
               <div className="space-y-4">
                 <div>
                   <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase mb-2">
-                    {selectedShow.category} · {selectedShow.season}
+                    {[selectedShow.category, selectedShow.season].filter(Boolean).join(' · ')}
                   </p>
                   <h2 className="text-4xl font-light tracking-tight mb-2">
                     {selectedShow.title}
                   </h2>
                   <p className="text-xl font-light text-[#6b6b6b]">
-                    {selectedShow.subtitle}
+                    {selectedShow.byline}
                   </p>
                 </div>
                 <div className="w-12 h-px bg-[#0a0a0a]"></div>
               </div>
 
-              <div className="prose prose-sm max-w-none space-y-6">
-                <p className="text-lg font-light text-[#4a4a4a] leading-relaxed">
-                  {selectedShow.content}
-                </p>
+              <div className="space-y-6 max-w-3xl">
+                {selectedShow.body?.map((paragraph, i) => (
+                  <p key={i} className="text-lg font-light text-[#4a4a4a] leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
               </div>
 
               <div className="pt-8 border-t border-[#e0e0e0] space-y-4">
@@ -150,7 +109,7 @@ Anderson remains one of fashion's most restless and essential minds.`,
                   Share this review
                 </p>
                 <div className="flex gap-4">
-                  {['Instagram', 'Facebook', 'Pinterest'].map((s) => (
+                  {['Instagram', 'Facebook', 'Pinterest'].map(s => (
                     <a key={s} href="#" className="text-sm text-[#0a0a0a] hover:text-[#6b6b6b] transition-colors">
                       {s}
                     </a>
@@ -158,6 +117,44 @@ Anderson remains one of fashion's most restless and essential minds.`,
                 </div>
               </div>
             </div>
+          </div>
+        ) : loading ? (
+          <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase py-20 text-center">Loading...</p>
+        ) : query.trim() ? (
+          <div className="space-y-8">
+            <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">
+              {shows.length} result{shows.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
+            </p>
+            {shows.length === 0 ? (
+              <p className="text-base font-light text-[#4a4a4a]">No reviews matched your search.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {shows.map(show => (
+                  <article
+                    key={show._id}
+                    className="group cursor-pointer space-y-4"
+                    onClick={() => setSelectedShow(show)}
+                  >
+                    <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
+                      <img src={show.image} alt={show.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">{show.category}</p>
+                        <p className="text-xs text-[#6b6b6b] font-light">{show.season}</p>
+                      </div>
+                      <h3 className="text-xl font-light tracking-tight group-hover:text-[#6b6b6b] transition-colors">{show.title}</h3>
+                      <p className="text-sm font-light text-[#6b6b6b]">{show.byline}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : allShows.length === 0 ? (
+          <div className="py-20 text-center space-y-4">
+            <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase">No reviews yet</p>
+            <p className="text-sm font-light text-[#4a4a4a]">Check back soon for new runway coverage.</p>
           </div>
         ) : (
           <div className="space-y-12">
@@ -169,17 +166,17 @@ Anderson remains one of fashion's most restless and essential minds.`,
                     Featured Review
                   </p>
                   <h2 className="text-4xl lg:text-5xl font-light tracking-tight">
-                    {shows[0].title}
+                    {allShows[0].title}
                   </h2>
                   <p className="text-xl font-light text-[#6b6b6b]">
-                    {shows[0].subtitle}
+                    {allShows[0].byline}
                   </p>
                 </div>
                 <p className="text-lg font-light text-[#4a4a4a]">
-                  {shows[0].excerpt}
+                  {allShows[0].excerpt}
                 </p>
                 <button
-                  onClick={() => setSelectedShow(shows[0])}
+                  onClick={() => setSelectedShow(allShows[0])}
                   className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light border-b border-[#0a0a0a] hover:text-[#6b6b6b] transition-colors pb-2"
                 >
                   Read Review
@@ -188,50 +185,40 @@ Anderson remains one of fashion's most restless and essential minds.`,
               </div>
 
               <div className="order-1 lg:order-2 h-96 bg-[#f0f0f0] rounded-lg overflow-hidden">
-                <img
-                  src={shows[0].image}
-                  alt={shows[0].title}
-                  className="w-full h-full object-cover"
-                />
+                <img src={allShows[0].image} alt={allShows[0].title} className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* More Reviews */}
-            <div className="space-y-4">
-              <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">
-                More Reviews
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {shows.slice(1).map((show) => (
-                  <article
-                    key={show.id}
-                    className="group cursor-pointer space-y-4"
-                    onClick={() => setSelectedShow(show)}
-                  >
-                    <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
-                      <img
-                        src={show.image}
-                        alt={show.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">
-                          {show.category}
-                        </p>
-                        <p className="text-xs text-[#6b6b6b] font-light">{show.season}</p>
+            {allShows.length > 1 && (
+              <div className="space-y-4">
+                <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">
+                  More Reviews
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {allShows.slice(1).map(show => (
+                    <article
+                      key={show._id}
+                      className="group cursor-pointer space-y-4"
+                      onClick={() => setSelectedShow(show)}
+                    >
+                      <div className="h-64 bg-[#f0f0f0] rounded-lg overflow-hidden">
+                        <img src={show.image} alt={show.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       </div>
-                      <h3 className="text-xl font-light tracking-tight group-hover:text-[#6b6b6b] transition-colors">
-                        {show.title}
-                      </h3>
-                      <p className="text-sm font-light text-[#6b6b6b]">{show.subtitle}</p>
-                      <p className="text-sm font-light text-[#4a4a4a]">{show.excerpt}</p>
-                    </div>
-                  </article>
-                ))}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">{show.category}</p>
+                          <p className="text-xs text-[#6b6b6b] font-light">{show.season}</p>
+                        </div>
+                        <h3 className="text-xl font-light tracking-tight group-hover:text-[#6b6b6b] transition-colors">{show.title}</h3>
+                        <p className="text-sm font-light text-[#6b6b6b]">{show.byline}</p>
+                        <p className="text-sm font-light text-[#4a4a4a]">{show.excerpt}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

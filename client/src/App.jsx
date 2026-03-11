@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Editorials from './pages/Editorials';
 import Runway from './pages/Runway';
+import Culture from './pages/Culture';
+import Admin from './pages/Admin';
 import './App.css'
 
 
@@ -18,6 +20,8 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/editorials' element={<Editorials />} />
         <Route path='/runway' element={<Runway />} />
+        <Route path='/culture' element={<Culture />} />
+        <Route path='/admin' element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );

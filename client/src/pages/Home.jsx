@@ -25,7 +25,7 @@ export default function VogueMERNHome() {
             <a href="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">
               Runway
             </a>
-            <a href="#" className="hover:text-[#6b6b6b] transition-colors duration-300">
+            <a href="/culture" className="hover:text-[#6b6b6b] transition-colors duration-300">
               Culture
             </a>
           </div>
@@ -57,7 +57,7 @@ export default function VogueMERNHome() {
             <a href="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
               Runway
             </a>
-            <a href="#" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+            <a href="/culture" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
               Culture
             </a>
             <div className="pt-4 border-t border-[#e0e0e0] flex flex-col gap-3">
@@ -109,7 +109,7 @@ export default function VogueMERNHome() {
           >
             <div className="absolute inset-0 bg-[#f0f0f0] rounded-lg overflow-hidden">
               <img
-                src="/images/editorials/CarolynB.jpg"
+                src="/images/editorials/carolyn.jpg"
                 alt="CHIARISSIME"
                 className="w-full h-full object-cover"
               />
@@ -143,6 +143,9 @@ export default function VogueMERNHome() {
               <a href="/runway" className="hover:text-[#6b6b6b] transition-colors">
                 All Runway
               </a>
+              <a href="/culture" className="hover:text-[#6b6b6b] transition-colors">
+                All Culture
+              </a>
             </div>
           </div>
 
@@ -151,7 +154,7 @@ export default function VogueMERNHome() {
             <a href="/editorials" className="md:col-span-2 group cursor-pointer">
               <div className="aspect-[16/9] bg-[#f0f0f0] overflow-hidden mb-4">
                 <img
-                  src="/images/editorials/CarolynB.jpg"
+                  src="/images/editorials/carolyn.jpg"
                   alt="The Carolyn Bessette Copy-Paste Era"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -210,16 +213,56 @@ export default function VogueMERNHome() {
                 title: 'Thrifting: Where History Meets Style',
               },
               {
+                href: '/runway',
+                img: '/images/runway/valentino.jpg',
+                label: 'Runway · SS 2025',
+                title: 'Valentino Couture SS 2025: Red and Silence',
+              },
+              {
+                href: '/culture',
+                img: '/images/culture/grandbudapest.jpg',
+                label: 'Culture · Film',
+                title: 'The Wes Anderson Wardrobe: When Cinema Becomes a Mood Board',
+              },
+            ].map((item, idx) => (
+              <a key={idx} href={item.href} className="group block">
+                <div className="aspect-[4/3] bg-[#f0f0f0] overflow-hidden mb-3">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <p className="text-xs tracking-widest uppercase text-[#6b6b6b] font-light mb-1">
+                  {item.label}
+                </p>
+                <h3 className="text-base font-light leading-snug group-hover:text-[#6b6b6b] transition-colors">
+                  {item.title}
+                </h3>
+              </a>
+            ))}
+          </div>
+
+          {/* Third row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-[#e0e0e0]">
+            {[
+              {
                 href: '/editorials',
                 img: '/images/editorials/paris.jpg',
                 label: 'Editorial · March 2025',
                 title: 'Paris Fashion Week: Where Fashion Writes Its Future',
               },
               {
-                href: '/runway',
-                img: '/images/runway/valentino.jpg',
-                label: 'Runway · SS 2025',
-                title: 'Valentino Couture SS 2025: Red and Silence',
+                href: '/culture',
+                img: '/images/culture/art.jpg',
+                label: 'Culture · Art',
+                title: 'The Canvas and the Collection: Fashion as Fine Art',
+              },
+              {
+                href: '/culture',
+                img: '/images/culture/RS.jpg',
+                label: 'Culture · Music',
+                title: 'Dressed for the Sound: How Music Shapes What We Wear',
               },
             ].map((item, idx) => (
               <a key={idx} href={item.href} className="group block">
@@ -321,10 +364,6 @@ export default function VogueMERNHome() {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500&display=swap');
-        * { font-family: 'Lora', serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
-        button:hover { cursor: pointer; }
       `}</style>
     </div>
   );
