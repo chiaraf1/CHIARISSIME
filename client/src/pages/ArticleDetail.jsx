@@ -22,15 +22,13 @@ export default function ArticleDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const back = article ? `/${article.page}` : '/';
-
   return (
     <div className="min-h-screen bg-white">
       <Nav />
 
       <div className="max-w-4xl mx-auto px-6 pt-36 pb-24">
         <button
-          onClick={() => navigate(back)}
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors mb-12"
         >
           ← Back

@@ -216,13 +216,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <button
-              onClick={handleLogout}
-              className="mt-10 flex items-center gap-2 text-sm tracking-widest uppercase font-light border border-[#0a0a0a] px-8 py-3 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300"
-            >
-              <LogOut size={14} />
-              <span>Sign Out</span>
-            </button>
           </div>
 
         </div>

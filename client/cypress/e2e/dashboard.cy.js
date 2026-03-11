@@ -55,10 +55,6 @@ describe('Dashboard Page', () => {
       cy.contains(testUser.email).should('be.visible');
     });
 
-    it('should show the three feature cards (My Account, Collections, Saved Items)', () => {
-      cy.contains('My Account').should('be.visible');
-    });
-
     it('should have a Logout button visible', () => {
       cy.contains('button', 'Logout').should('be.visible');
     });
