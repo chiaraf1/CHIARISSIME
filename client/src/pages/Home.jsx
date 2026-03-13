@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import NewsletterSection from '../components/NewsletterSection';
 
-const API = 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL;
 
 export default function VogueMERNHome() {
   const [articles, setArticles] = useState([]);

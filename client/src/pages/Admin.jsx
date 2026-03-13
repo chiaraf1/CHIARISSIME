@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Plus, Pencil, Trash2, X, LogOut, Upload } from 'lucide-react';
 
-const API = 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL;
 
 const emptyForm = {
   title: '',

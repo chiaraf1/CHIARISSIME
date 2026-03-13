@@ -11,7 +11,7 @@ export default function Editorials() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/articles?page=editorials')
+    fetch(`${import.meta.env.VITE_API_URL}/api/articles?page=editorials`)
       .then(res => res.json())
       .then(data => setAllEditorials(Array.isArray(data) ? data : []))
       .catch(() => setAllEditorials([]))

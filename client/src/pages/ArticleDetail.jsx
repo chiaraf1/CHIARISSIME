@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import Nav from '../components/Nav';
 
-const API = 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL;
 
 export default function ArticleDetail() {
   const { id } = useParams();

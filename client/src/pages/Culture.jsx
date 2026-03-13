@@ -17,7 +17,7 @@ export default function Culture() {
   );
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/articles?page=culture')
+    fetch(`${import.meta.env.VITE_API_URL}/api/articles?page=culture`)
       .then(res => res.json())
       .then(data => setAllArticles(Array.isArray(data) ? data : []))
       .catch(() => setAllArticles([]))

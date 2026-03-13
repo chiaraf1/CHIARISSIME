@@ -11,7 +11,7 @@ export default function Runway() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/articles?page=runway')
+    fetch(`${import.meta.env.VITE_API_URL}/api/articles?page=runway`)
       .then(res => res.json())
       .then(data => setAllShows(Array.isArray(data) ? data : []))
       .catch(() => setAllShows([]))
