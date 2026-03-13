@@ -32,6 +32,27 @@ describe('Culture Page', () => {
     cy.url().should('include', '/runway');
   });
 
+  // ====== SEARCH BAR ======
+
+  it('should have a search bar on the page', () => {
+    cy.get('input[placeholder="Search culture..."]').should('be.visible');
+  });
+
+  it('should let you type in the search bar', () => {
+    cy.get('input[placeholder="Search culture..."]').type('Wes');
+    cy.get('input[placeholder="Search culture..."]').should('have.value', 'Wes');
+  });
+
+  it('should filter articles based on search query', () => {
+    cy.get('input[placeholder="Search culture..."]').type('Wes Anderson');
+    cy.contains('Wes Anderson: The Architect of Symmetrical Style').should('be.visible');
+  });
+
+  it('should show no results message for an unmatched search', () => {
+    cy.get('input[placeholder="Search culture..."]').type('zzzznotanarticle');
+    cy.contains('No results found').should('be.visible');
+  });
+
   // ====== ARTICLE INDEX ======
 
   it('should show the Film tag', () => {

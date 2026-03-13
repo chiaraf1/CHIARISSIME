@@ -1,9 +1,17 @@
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const isLoggedIn = !!localStorage.getItem('token');
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'));
+
+  const toggleDark = () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    setDark(isDark);
+  };
 
   return (
     <nav className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#e0e0e0]">
@@ -18,43 +26,50 @@ export default function Nav() {
 
         {/* Desktop nav links */}
         <div className="hidden lg:flex gap-12 text-sm tracking-wide uppercase font-light">
-          <a href="/editorials" className="hover:text-[#6b6b6b] transition-colors duration-300">
+          <Link to="/editorials" className="hover:text-[#6b6b6b] transition-colors duration-300">
             Editorials
-          </a>
-          <a href="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">
+          </Link>
+          <Link to="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">
             Runway
-          </a>
-          <a href="/culture" className="hover:text-[#6b6b6b] transition-colors duration-300">
+          </Link>
+          <Link to="/culture" className="hover:text-[#6b6b6b] transition-colors duration-300">
             Culture
-          </a>
+          </Link>
         </div>
 
         {/* Center: Brand Name */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <a href="/">
+          <Link to="/">
             <h1 className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">
               CHIARISSIME
             </h1>
-          </a>
+          </Link>
         </div>
 
-        {/* Right: auth actions */}
+        {/* Right: dark mode toggle + auth actions */}
         <div className="hidden lg:flex items-center gap-4">
+          <button
+            onClick={toggleDark}
+            className="text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors duration-300"
+            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           {isLoggedIn ? (
-            <a
-              href="/dashboard"
+            <Link
+              to="/dashboard"
               className="text-sm tracking-widest uppercase font-light border border-[#0a0a0a] px-6 py-2 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300"
             >
               My Profile
-            </a>
+            </Link>
           ) : (
             <>
-              <a href="/login" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
+              <Link to="/login" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
                 Sign In
-              </a>
-              <a href="/register" className="text-sm tracking-widest uppercase font-light border border-[#0a0a0a] px-6 py-2 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">
+              </Link>
+              <Link to="/register" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
                 Register
-              </a>
+              </Link>
             </>
           )}
         </div>
@@ -63,28 +78,35 @@ export default function Nav() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-[#e0e0e0] px-6 py-8 space-y-6">
-          <a href="/editorials" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+          <Link to="/editorials" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
             Editorials
-          </a>
-          <a href="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+          </Link>
+          <Link to="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
             Runway
-          </a>
-          <a href="/culture" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+          </Link>
+          <Link to="/culture" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
             Culture
-          </a>
+          </Link>
           <div className="pt-4 border-t border-[#e0e0e0] flex flex-col gap-3">
+            <button
+              onClick={toggleDark}
+              className="flex items-center gap-2 text-sm tracking-wide uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
+            >
+              {dark ? <Sun size={16} /> : <Moon size={16} />}
+              <span>{dark ? 'Light Mode' : 'Dark Mode'}</span>
+            </button>
             {isLoggedIn ? (
-              <a href="/dashboard" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+              <Link to="/dashboard" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
                 My Profile
-              </a>
+              </Link>
             ) : (
               <>
-                <a href="/login" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+                <Link to="/login" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
                   Sign In
-                </a>
-                <a href="/register" className="inline-block text-center text-sm tracking-wide uppercase font-light border border-[#0a0a0a] px-6 py-2 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">
+                </Link>
+                <Link to="/register" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
                   Register
-                </a>
+                </Link>
               </>
             )}
           </div>

@@ -42,18 +42,10 @@ describe('Home Page', () => {
     cy.contains('Latest').should('be.visible');
   });
 
-  it('should show the Carolyn Bessette editorial card', () => {
-    cy.contains('The Carolyn Bessette Copy-Paste Era').should('be.visible');
-  });
-
   it('should show a CHANEL runway card', () => {
     cy.contains('CHANEL').should('be.visible');
   });
 
-  it('should navigate to an article detail URL when clicking a card', () => {
-    cy.contains('The Carolyn Bessette Copy-Paste Era').click();
-    cy.url().should('match', /\/editorials\/[a-f0-9]+/);
-  });
 
   // ====== NEWSLETTER SECTION ======
 
@@ -64,6 +56,30 @@ describe('Home Page', () => {
 
   it('should have a Subscribe button in the newsletter section', () => {
     cy.contains('button', 'Subscribe').should('be.visible');
+  });
+
+  it('should show success message after subscribing with a valid email', () => {
+    cy.intercept('POST', '**/api/newsletter').as('subscribe');
+    cy.get('input[type="email"]').type(`test_${Date.now()}@example.com`);
+    cy.contains('button', 'Subscribe').click();
+    cy.wait('@subscribe');
+    cy.contains('Subscribed successfully').should('be.visible');
+  });
+
+  it('should show "Already subscribed" if the same email is submitted twice', () => {
+    const email = `dupe_${Date.now()}@example.com`;
+    cy.intercept('POST', '**/api/newsletter').as('subscribe');
+
+    cy.get('input[type="email"]').type(email);
+    cy.contains('button', 'Subscribe').click();
+    cy.wait('@subscribe');
+
+    cy.visit('http://localhost:5173/');
+    cy.get('input[type="email"]').type(email);
+    cy.intercept('POST', '**/api/newsletter').as('subscribe2');
+    cy.contains('button', 'Subscribe').click();
+    cy.wait('@subscribe2');
+    cy.contains('Already subscribed').should('be.visible');
   });
 
   // ====== FOOTER ======

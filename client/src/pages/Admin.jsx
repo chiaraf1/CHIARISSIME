@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Plus, Pencil, Trash2, X, LogOut, Upload } from 'lucide-react';
 
 const API = 'http://localhost:5000';
@@ -181,26 +181,31 @@ export default function Admin() {
 
   const tabs = ['editorials', 'runway', 'culture'];
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen bg-white text-[#0a0a0a]">
       {/* Header */}
-      <div className="fixed w-full top-0 z-50 bg-white border-b border-[#e0e0e0]">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <a href="/" className="text-xl font-light tracking-[0.2em] uppercase">CHIARISSIME</a>
-            <span className="text-xs tracking-widest uppercase font-light text-[#6b6b6b] border-l border-[#e0e0e0] pl-6">Admin Panel</span>
-          </div>
-          <button
-            onClick={() => { localStorage.removeItem('token'); navigate('/'); }}
-            className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
-          >
-            <LogOut size={14} />
-            Logout
-          </button>
+      <header className="relative flex items-center justify-between px-6 py-6 border-b border-[#e0e0e0]">
+        <div className="w-24" />
+        <div className="absolute left-1/2 -translate-x-1/2 text-center">
+          <Link to="/"><h1 className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">CHIARISSIME</h1></Link>
+          <span className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">Admin Panel</span>
         </div>
-      </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors"
+        >
+          <LogOut size={14} />
+          Logout
+        </button>
+      </header>
 
-      <div className="pt-28 pb-24 px-6 max-w-6xl mx-auto">
+
+      <div className="pt-12 pb-24 px-6 max-w-6xl mx-auto">
 
         {/* Tabs + New button */}
         <div className="flex items-center justify-between mb-10">

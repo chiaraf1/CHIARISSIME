@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Mail, Lock, User } from 'lucide-react';
 
@@ -53,15 +53,13 @@ export default function Register() {
     <div className="min-h-screen bg-white flex flex-col">
       {/* Top bar */}
       <div className="border-b border-[#e0e0e0] px-6 py-5 flex items-center justify-between">
-        <a href="/" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
+        <Link to="/" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
           ← Home
-        </a>
-        <a href="/" className="text-xl font-light tracking-[0.2em] uppercase">
-          CHIARISSIME
-        </a>
-        <a href="/login" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
+        </Link>
+        <Link to="/"><h1 className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">CHIARISSIME</h1></Link>
+        <Link to="/login" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
           Sign In
-        </a>
+        </Link>
       </div>
 
       {/* Form */}
@@ -151,9 +149,9 @@ export default function Register() {
 
           <p className="text-center text-sm text-[#6b6b6b] mt-6 font-light">
             Already have an account?{' '}
-            <a href="/login" className="text-[#0a0a0a] underline hover:text-[#6b6b6b] transition-colors">
+            <Link to="/login" className="text-[#0a0a0a] underline hover:text-[#6b6b6b] transition-colors">
               Sign In
-            </a>
+            </Link>
           </p>
         </div>
       </div>

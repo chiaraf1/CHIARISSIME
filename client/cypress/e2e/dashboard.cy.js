@@ -42,6 +42,11 @@ describe('Dashboard Page', () => {
       cy.contains('CHIARISSIME').should('be.visible');
     });
 
+    it('should have a working Culture link in the desktop nav', () => {
+      cy.get('nav').contains('Culture').click();
+      cy.url().should('include', '/culture');
+    });
+
     it('should show "Welcome back" text', () => {
       cy.contains('Welcome back').should('be.visible');
     });

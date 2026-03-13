@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogOut, Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { LogOut, Menu, X, Bookmark } from 'lucide-react';
+
+const API = 'http://localhost:5000';
 
 export default function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +41,13 @@ export default function Dashboard() {
       }
 
       setUserData({ email: decodedToken.email, isAdmin: decodedToken.isAdmin });
+
+      fetch(`${API}/api/bookmarks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(res => res.json())
+        .then(data => { if (Array.isArray(data)) setBookmarks(data); })
+        .catch(() => {});
     } catch (err) {
       console.error('Error decoding token:', err);
       localStorage.removeItem('token');
@@ -75,22 +85,24 @@ export default function Dashboard() {
 
           {/* Left nav links (desktop) */}
           <div className="hidden lg:flex gap-12 text-sm tracking-wide uppercase font-light">
-            <a href="/editorials" className="hover:text-[#6b6b6b] transition-colors duration-300">
+            <Link to="/editorials" className="hover:text-[#6b6b6b] transition-colors duration-300">
               Editorials
-            </a>
-            <a href="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">
+            </Link>
+            <Link to="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">
               Runway
-            </a>
-            <a href="#" className="hover:text-[#6b6b6b] transition-colors duration-300">
+            </Link>
+            <Link to="/culture" className="hover:text-[#6b6b6b] transition-colors duration-300">
               Culture
-            </a>
+            </Link>
           </div>
 
           {/* Center brand */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <a href="/" className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">
+            <Link to="/">
+            <h1 className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">
               CHIARISSIME
-            </a>
+              </h1>
+            </Link>
           </div>
 
           {/* Right: Logout (desktop) */}
@@ -108,15 +120,15 @@ export default function Dashboard() {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="lg:hidden bg-white border-t border-[#e0e0e0] px-6 py-8 space-y-6">
-            <a href="/editorials" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+            <Link to="/editorials" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
               Editorials
-            </a>
-            <a href="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+            </Link>
+            <Link to="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
               Runway
-            </a>
-            <a href="#" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
+            </Link>
+            <Link to="/culture" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">
               Culture
-            </a>
+            </Link>
             <div className="pt-4 border-t border-[#e0e0e0]">
               <button
                 onClick={handleLogout}
@@ -159,18 +171,18 @@ export default function Dashboard() {
 
             {userData?.isAdmin && (
               <div className="mb-8">
-                <a href="/admin" className="group flex items-center justify-between border border-[#0a0a0a] p-6 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">
+                <Link to="/admin" className="group flex items-center justify-between border border-[#0a0a0a] p-6 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">
                   <div className="space-y-1">
                     <p className="text-xs tracking-widest uppercase font-light opacity-60">Admin</p>
                     <h4 className="text-lg font-light tracking-tight">Admin Panel — Manage Content</h4>
                   </div>
                   <span className="text-sm font-light tracking-wide">Open →</span>
-                </a>
+                </Link>
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <a href="/editorials" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
+              <Link to="/editorials" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
                 <div className="space-y-4">
                   <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">Section</p>
                   <h4 className="text-xl font-light group-hover:text-[#6b6b6b] transition-colors">Editorials</h4>
@@ -179,9 +191,9 @@ export default function Dashboard() {
                   </p>
                   <span className="text-sm font-light tracking-wide">Read →</span>
                 </div>
-              </a>
+              </Link>
 
-              <a href="/runway" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
+              <Link to="/runway" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
                 <div className="space-y-4">
                   <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">Section</p>
                   <h4 className="text-xl font-light group-hover:text-[#6b6b6b] transition-colors">Runway</h4>
@@ -190,19 +202,70 @@ export default function Dashboard() {
                   </p>
                   <span className="text-sm font-light tracking-wide">Read →</span>
                 </div>
-              </a>
+              </Link>
 
-              <a href="/" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
+              <Link to="/culture" className="group block border border-[#e0e0e0] p-8 hover:border-[#0a0a0a] transition-colors duration-300">
                 <div className="space-y-4">
-                  <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">Home</p>
-                  <h4 className="text-xl font-light group-hover:text-[#6b6b6b] transition-colors">Latest</h4>
+                  <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">Section</p>
+                  <h4 className="text-xl font-light group-hover:text-[#6b6b6b] transition-colors">Culture</h4>
                   <p className="text-sm font-light text-[#4a4a4a]">
-                    All the stories from across the journal in one place.
+                    Film, art, music, and ideas at the intersection of fashion and culture.
                   </p>
-                  <span className="text-sm font-light tracking-wide">Go →</span>
+                  <span className="text-sm font-light tracking-wide">Read →</span>
                 </div>
-              </a>
+              </Link>
             </div>
+          </div>
+
+          {/* Saved Articles */}
+          <div className="border-t border-[#e0e0e0] pt-16">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <div className="w-8 h-px bg-[#0a0a0a] mb-4"></div>
+                <h3 className="text-2xl font-light tracking-tight flex items-center gap-3">
+                  <Bookmark size={20} />
+                  Saved Articles
+                </h3>
+              </div>
+            </div>
+
+            {bookmarks.length === 0 ? (
+              <p className="text-sm font-light text-[#6b6b6b] tracking-wide">
+                No saved articles yet. Bookmark pieces while reading to find them here.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {bookmarks.map(article => (
+                  <Link
+                    key={article._id}
+                    to={`/${article.page}/${article._id}`}
+                    className="group block border border-[#e0e0e0] hover:border-[#0a0a0a] transition-colors duration-300"
+                  >
+                    {article.image && (
+                      <div className="overflow-hidden h-48">
+                        <img
+                          src={article.image}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6 space-y-2">
+                      <p className="text-xs tracking-widest uppercase font-light text-[#6b6b6b]">
+                        {article.page}
+                      </p>
+                      <h4 className="text-lg font-light tracking-tight leading-snug group-hover:text-[#6b6b6b] transition-colors">
+                        {article.title}
+                      </h4>
+                      {article.byline && (
+                        <p className="text-sm font-light text-[#6b6b6b]">{article.byline}</p>
+                      )}
+                      <span className="text-sm font-light tracking-wide">Read →</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Account Info */}

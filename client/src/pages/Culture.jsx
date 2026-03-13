@@ -2,11 +2,19 @@ import { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
+import NewsletterSection from '../components/NewsletterSection';
 
 export default function Culture() {
   const [allArticles, setAllArticles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const filteredArticles = allArticles.filter(a =>
+    a.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    a.byline?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    a.tag?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     fetch('http://localhost:5000/api/articles?page=culture')
@@ -34,6 +42,15 @@ export default function Culture() {
             Fashion does not exist in isolation. It is in conversation with cinema, with art, with music —
             with every form that insists on asking who we are and how we want to appear.
           </p>
+          <div className="max-w-md">
+            <input
+              type="text"
+              placeholder="Search culture..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-3 border border-[#e0e0e0] focus:outline-none focus:border-[#0a0a0a] text-sm placeholder-[#aaaaaa] font-light"
+            />
+          </div>
         </div>
       </section>
 
@@ -41,10 +58,14 @@ export default function Culture() {
       <div className="max-w-6xl mx-auto px-6 py-16">
         {loading ? (
           <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase py-20 text-center">Loading...</p>
-        ) : allArticles.length === 0 ? (
+        ) : filteredArticles.length === 0 ? (
           <div className="py-20 text-center space-y-4">
-            <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase">No articles yet</p>
-            <p className="text-sm font-light text-[#4a4a4a]">Check back soon for new stories.</p>
+            <p className="text-sm font-light text-[#6b6b6b] tracking-widest uppercase">
+              {searchQuery ? 'No results found' : 'No articles yet'}
+            </p>
+            <p className="text-sm font-light text-[#4a4a4a]">
+              {searchQuery ? 'Try a different search.' : 'Check back soon for new stories.'}
+            </p>
           </div>
         ) : (
           <div className="space-y-12">
@@ -52,13 +73,13 @@ export default function Culture() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-12 border-b border-[#e0e0e0]">
               <div className="order-2 lg:order-1 space-y-6">
                 <div className="space-y-2">
-                  <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">Featured · {allArticles[0].tag}</p>
-                  <h2 className="text-4xl lg:text-5xl font-light tracking-tight">{allArticles[0].title}</h2>
-                  <p className="text-xl font-light text-[#6b6b6b]">{allArticles[0].byline}</p>
+                  <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">Featured · {filteredArticles[0].tag}</p>
+                  <h2 className="text-4xl lg:text-5xl font-light tracking-tight">{filteredArticles[0].title}</h2>
+                  <p className="text-xl font-light text-[#6b6b6b]">{filteredArticles[0].byline}</p>
                 </div>
-                <p className="text-lg font-light text-[#4a4a4a]">{allArticles[0].excerpt}</p>
+                <p className="text-lg font-light text-[#4a4a4a]">{filteredArticles[0].excerpt}</p>
                 <button
-                  onClick={() => navigate(`/culture/${allArticles[0]._id}`)}
+                  onClick={() => navigate(`/culture/${filteredArticles[0]._id}`)}
                   className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light border-b border-[#0a0a0a] hover:text-[#6b6b6b] transition-colors pb-2"
                 >
                   Read Article
@@ -66,16 +87,16 @@ export default function Culture() {
                 </button>
               </div>
               <div className="order-1 lg:order-2 h-96 bg-[#f0f0f0] rounded-lg overflow-hidden">
-                <img src={allArticles[0].image} alt={allArticles[0].title} className="w-full h-full object-cover" />
+                <img src={filteredArticles[0].image} alt={filteredArticles[0].title} className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* More Articles */}
-            {allArticles.length > 1 && (
+            {filteredArticles.length > 1 && (
               <div className="space-y-4">
                 <p className="text-xs text-[#6b6b6b] font-light tracking-widest uppercase">More Stories</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {allArticles.slice(1).map(article => (
+                  {filteredArticles.slice(1).map(article => (
                     <article
                       key={article._id}
                       className="group cursor-pointer space-y-4"
@@ -102,25 +123,11 @@ export default function Culture() {
         )}
       </div>
 
-      {/* Newsletter */}
-      <section className="py-16 px-6 bg-[#f5f5f5] border-t border-[#e0e0e0]">
-        <div className="max-w-2xl mx-auto text-center space-y-6">
-          <h3 className="text-3xl font-light tracking-tight">Stay Updated</h3>
-          <p className="text-lg font-light text-[#4a4a4a]">
-            Subscribe to receive our latest culture pieces and exclusive stories.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-3 bg-white border border-[#e0e0e0] focus:outline-none focus:border-[#0a0a0a] placeholder-[#aaaaaa] text-sm"
-            />
-            <button className="px-6 py-3 bg-[#0a0a0a] text-white text-sm tracking-widest uppercase font-light hover:bg-[#333333] transition-colors duration-300">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
+      <NewsletterSection
+        title="Stay Updated"
+        description="Subscribe to receive our latest culture pieces and exclusive stories."
+        className="py-16 px-6 bg-[#f5f5f5] border-t border-[#e0e0e0]"
+      />
     </div>
   );
 }

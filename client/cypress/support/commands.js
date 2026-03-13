@@ -5,3 +5,17 @@ Cypress.Commands.add('loginAs', (email, password) => {
     window.localStorage.setItem('token', response.body.token);
   });
 });
+
+// Create and log in as an admin user (requires CYPRESS_SECRET active on server)
+Cypress.Commands.add('loginAsAdmin', () => {
+  const email = 'cypress_admin@chiarissime.test';
+  const password = 'cypress_admin_pass';
+  cy.request('POST', 'http://localhost:5000/api/auth/seed-admin', {
+    secret: 'cypress_test_secret',
+    name: 'Cypress Admin',
+    email,
+    password,
+  }).then(() => {
+    cy.loginAs(email, password);
+  });
+});

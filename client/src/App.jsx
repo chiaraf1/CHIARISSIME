@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Register from './pages/Register';
@@ -8,10 +9,19 @@ import Runway from './pages/Runway';
 import Culture from './pages/Culture';
 import Admin from './pages/Admin';
 import ArticleDetail from './pages/ArticleDetail';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 import './App.css'
 
 
 function App() {
+  useEffect(() => {
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -26,6 +36,9 @@ function App() {
         <Route path='/editorials/:id' element={<ArticleDetail />} />
         <Route path='/runway/:id' element={<ArticleDetail />} />
         <Route path='/culture/:id' element={<ArticleDetail />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

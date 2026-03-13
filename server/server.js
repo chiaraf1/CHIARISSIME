@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import authRoutes from './routes/Authroutes.js';
 import articleRoutes from './routes/articleRoutes.js';
+import bookmarkRoutes from './routes/bookmarkRoutes.js';
+import newsletterRoutes from './routes/newsletterRoutes.js';
 import { verifyToken, requireAdmin } from './middleware/auth.js';
 
 dotenv.config();
@@ -40,6 +42,31 @@ app.post('/api/upload', verifyToken, requireAdmin, upload.single('image'), (req,
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/bookmarks', bookmarkRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+
+// Test-only: seed an admin user (requires CYPRESS_SECRET env var to be active)
+if (process.env.CYPRESS_SECRET) {
+  app.post('/api/auth/seed-admin', async (req, res) => {
+    if (req.body.secret !== process.env.CYPRESS_SECRET) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    const { name, email, password } = req.body;
+    try {
+      const { default: User } = await import('./models/User.js');
+      let user = await User.findOne({ email });
+      if (user) {
+        user.isAdmin = true;
+        await user.save();
+      } else {
+        user = await User.create({ name, email, password, isAdmin: true });
+      }
+      res.json({ message: 'Admin ready' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+}
 
 // Health check
 app.get('/api/health', (_req, res) => {

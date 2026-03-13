@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Nav from '../components/Nav';
+import NewsletterSection from '../components/NewsletterSection';
 
 const API = 'http://localhost:5000';
 
 export default function VogueMERNHome() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,50 +46,7 @@ export default function VogueMERNHome() {
 
   return (
     <div className="min-h-screen bg-white text-[#0a0a0a] font-serif overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#e0e0e0]">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-[#0a0a0a] hover:text-[#6b6b6b] transition-colors duration-300 lg:hidden"
-          >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-
-          <div className="hidden lg:flex gap-12 text-sm tracking-wide uppercase font-light">
-            <a href="/editorials" className="hover:text-[#6b6b6b] transition-colors duration-300">Editorials</a>
-            <a href="/runway" className="hover:text-[#6b6b6b] transition-colors duration-300">Runway</a>
-            <a href="/culture" className="hover:text-[#6b6b6b] transition-colors duration-300">Culture</a>
-          </div>
-
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <h1 className="text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase">
-              <span className="inline-block">CHIARISSIME</span>
-            </h1>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <a href="/login" className="text-sm tracking-widest uppercase font-light text-[#6b6b6b] hover:text-[#0a0a0a] transition-colors">
-              Sign In
-            </a>
-            <a href="/register" className="text-sm tracking-widest uppercase font-light border border-[#0a0a0a] px-6 py-2 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">
-              Register
-            </a>
-          </div>
-        </div>
-
-        {menuOpen && (
-          <div className="lg:hidden bg-white border-t border-[#e0e0e0] px-6 py-8 space-y-6">
-            <a href="/editorials" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">Editorials</a>
-            <a href="/runway" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">Runway</a>
-            <a href="/culture" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">Culture</a>
-            <div className="pt-4 border-t border-[#e0e0e0] flex flex-col gap-3">
-              <a href="/login" className="block text-sm tracking-wide uppercase font-light hover:text-[#6b6b6b] transition-colors">Sign In</a>
-              <a href="/register" className="inline-block text-center text-sm tracking-wide uppercase font-light border border-[#0a0a0a] px-6 py-2 hover:bg-[#0a0a0a] hover:text-white transition-all duration-300">Register</a>
-            </div>
-          </div>
-        )}
-      </nav>
+      <Nav />
 
       {/* Hero Section */}
       <section className="pt-32 pb-24 px-6">
@@ -105,10 +63,10 @@ export default function VogueMERNHome() {
               CHIARISSIME covers fashion from the inside — runway reviews, cultural editorials,
               and the ideas that shape the way we dress.
             </p>
-            <a href="/editorials" className="group relative inline-block overflow-hidden px-8 py-4 text-sm tracking-widest uppercase font-light border border-[#0a0a0a] hover:text-white transition-colors duration-300">
+            <Link to="/editorials" className="group relative inline-block overflow-hidden px-8 py-4 text-sm tracking-widest uppercase font-light border border-[#0a0a0a] hover:text-white transition-colors duration-300">
               <div className="absolute inset-0 bg-[#0a0a0a] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 -z-10"></div>
               Read the Latest
-            </a>
+            </Link>
           </div>
 
           <div className="relative h-96 lg:h-[500px] group opacity-0" style={{ animation: 'fadeInUp 1s ease-out 0.2s forwards' }}>
@@ -140,9 +98,9 @@ export default function VogueMERNHome() {
               <h2 className="text-3xl font-light tracking-tight">Latest</h2>
             </div>
             <div className="flex gap-6 text-xs tracking-widest uppercase font-light">
-              <a href="/editorials" className="border-b border-[#0a0a0a] pb-1 hover:text-[#6b6b6b] transition-colors">All Editorials</a>
-              <a href="/runway" className="hover:text-[#6b6b6b] transition-colors">All Runway</a>
-              <a href="/culture" className="hover:text-[#6b6b6b] transition-colors">All Culture</a>
+              <Link to="/editorials" className="border-b border-[#0a0a0a] pb-1 hover:text-[#6b6b6b] transition-colors">All Editorials</Link>
+              <Link to="/runway" className="hover:text-[#6b6b6b] transition-colors">All Runway</Link>
+              <Link to="/culture" className="hover:text-[#6b6b6b] transition-colors">All Culture</Link>
             </div>
           </div>
 
@@ -155,7 +113,7 @@ export default function VogueMERNHome() {
               {/* First row: 1 large + 2 stacked */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {featured && (
-                  <a href={pageHref(featured.page)} className="md:col-span-2 group cursor-pointer">
+                  <Link to={pageHref(featured.page)} className="md:col-span-2 group cursor-pointer">
                     <div className="aspect-[16/9] bg-[#f0f0f0] overflow-hidden mb-4">
                       {featured.image ? (
                         <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -165,12 +123,12 @@ export default function VogueMERNHome() {
                     </div>
                     <p className="text-xs tracking-widest uppercase text-[#6b6b6b] font-light mb-2">{labelFor(featured)}</p>
                     <h3 className="text-2xl font-light leading-snug group-hover:text-[#6b6b6b] transition-colors">{featured.title}</h3>
-                  </a>
+                  </Link>
                 )}
 
                 <div className="space-y-8">
                   {sideTwo.map(article => (
-                    <a key={article._id} href={pageHref(article.page)} className="group block">
+                    <Link key={article._id} to={pageHref(article.page)} className="group block">
                       <div className="aspect-[4/3] bg-[#f0f0f0] overflow-hidden mb-3">
                         {article.image ? (
                           <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -180,7 +138,7 @@ export default function VogueMERNHome() {
                       </div>
                       <p className="text-xs tracking-widest uppercase text-[#6b6b6b] font-light mb-1">{labelFor(article)}</p>
                       <h3 className="text-base font-light leading-snug group-hover:text-[#6b6b6b] transition-colors">{article.title}</h3>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -189,7 +147,7 @@ export default function VogueMERNHome() {
               {secondRow.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-[#e0e0e0]">
                   {secondRow.map(article => (
-                    <a key={article._id} href={pageHref(article.page)} className="group block">
+                    <Link key={article._id} to={pageHref(article.page)} className="group block">
                       <div className="aspect-[4/3] bg-[#f0f0f0] overflow-hidden mb-3">
                         {article.image ? (
                           <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -199,7 +157,7 @@ export default function VogueMERNHome() {
                       </div>
                       <p className="text-xs tracking-widest uppercase text-[#6b6b6b] font-light mb-1">{labelFor(article)}</p>
                       <h3 className="text-base font-light leading-snug group-hover:text-[#6b6b6b] transition-colors">{article.title}</h3>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -208,7 +166,7 @@ export default function VogueMERNHome() {
               {thirdRow.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-[#e0e0e0]">
                   {thirdRow.map(article => (
-                    <a key={article._id} href={pageHref(article.page)} className="group block">
+                    <Link key={article._id} to={pageHref(article.page)} className="group block">
                       <div className="aspect-[4/3] bg-[#f0f0f0] overflow-hidden mb-3">
                         {article.image ? (
                           <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -218,7 +176,7 @@ export default function VogueMERNHome() {
                       </div>
                       <p className="text-xs tracking-widest uppercase text-[#6b6b6b] font-light mb-1">{labelFor(article)}</p>
                       <h3 className="text-base font-light leading-snug group-hover:text-[#6b6b6b] transition-colors">{article.title}</h3>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -248,34 +206,21 @@ export default function VogueMERNHome() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl lg:text-5xl font-light tracking-tight">Join Our Community</h2>
-          <p className="text-lg font-light text-[#4a4a4a]">
-            Subscribe to receive curated stories, exclusive previews, and invitations to our most intimate experiences.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input type="email" placeholder="your@email.com" className="flex-1 px-4 py-3 bg-white border border-[#e0e0e0] focus:outline-none focus:border-[#0a0a0a] placeholder-[#aaaaaa] text-sm" />
-            <button className="px-6 py-3 bg-[#0a0a0a] text-white text-sm tracking-widest uppercase font-light hover:bg-[#333333] transition-colors duration-300">Subscribe</button>
-          </div>
-        </div>
-      </section>
+      <NewsletterSection
+        title="Join Our Community"
+        description="Subscribe to receive curated stories, exclusive previews, and invitations to our most intimate experiences."
+      />
 
       {/* Footer */}
       <footer className="bg-[#0a0a0a] text-white py-12 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-sm font-light">
           <div>
             <h4 className="uppercase tracking-widest mb-4 font-light">About</h4>
-            <a href="#" className="hover:text-[#aaaaaa] transition-colors">Our Story</a>
+            <Link to="/about" className="hover:text-[#aaaaaa] transition-colors">Our Story</Link>
           </div>
           <div>
             <h4 className="uppercase tracking-widest mb-4 font-light">Support</h4>
-            <a href="#" className="hover:text-[#aaaaaa] transition-colors">Contact</a>
-          </div>
-          <div>
-            <h4 className="uppercase tracking-widest mb-4 font-light">Follow</h4>
-            <a href="#" className="hover:text-[#aaaaaa] transition-colors">Instagram</a>
+            <Link to="/contact" className="hover:text-[#aaaaaa] transition-colors">Contact</Link>
           </div>
         </div>
         <div className="border-t border-[#333] mt-8 pt-8 text-center text-xs text-[#666]">

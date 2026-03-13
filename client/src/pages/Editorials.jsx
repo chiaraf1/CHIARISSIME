@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChevronRight, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
+import NewsletterSection from '../components/NewsletterSection';
 
 export default function Editorials() {
   const [allEditorials, setAllEditorials] = useState([]);
@@ -159,24 +160,11 @@ export default function Editorials() {
       </div>
 
       {/* Newsletter */}
-      <section className="py-16 px-6 bg-[#f5f5f5] border-t border-[#e0e0e0]">
-        <div className="max-w-2xl mx-auto text-center space-y-6">
-          <h3 className="text-3xl font-light tracking-tight">Stay Updated</h3>
-          <p className="text-lg font-light text-[#4a4a4a]">
-            Subscribe to receive our latest editorials and exclusive stories.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-3 bg-white border border-[#e0e0e0] focus:outline-none focus:border-[#0a0a0a] placeholder-[#aaaaaa] text-sm"
-            />
-            <button className="px-6 py-3 bg-[#0a0a0a] text-white text-sm tracking-widest uppercase font-light hover:bg-[#333333] transition-colors duration-300">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
+      <NewsletterSection
+        title="Stay Updated"
+        description="Subscribe to receive our latest editorials and exclusive stories."
+        className="py-16 px-6 bg-[#f5f5f5] border-t border-[#e0e0e0]"
+      />
     </div>
   );
 }

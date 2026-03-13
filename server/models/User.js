@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  bookmarks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Article',
+  }],
   createdAt: {
     type: Date,
     default: Date.now,
